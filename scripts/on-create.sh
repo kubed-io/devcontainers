@@ -58,7 +58,7 @@ EOF
 [user]
  name = $GIT_USER_NAME
  email = $GIT_USER_EMAIL
- signingkey = ~/.ssh/github
+ signingkey = ~/.ssh/github.pub
 
 [core]
  excludesfile = ~/.gitignore
