@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
+# add some bashrc features
+echo "Configuring custom .bashrc entries..."
+{
+    echo 'eval "$(direnv hook bash)"'
+} >> ~/.bashrc 
+
 OP_GIT_SETUP="false"
 
 mkdir -p ~/.ssh
@@ -34,26 +40,12 @@ else
         op read "$OP_SSH_REF/public key" > ~/.ssh/github.pub
         chmod 600 ~/.ssh/github
         chmod 644 ~/.ssh/github.pub
-    fi
-fi
+        echo "Setting git committer name and email from 1Password..."
+        export GIT_COMMITTER_NAME="$(op read "$OP_SSH_REF/User/name")"
+        export GIT_COMMITTER_EMAIL="$(op read "$OP_SSH_REF/User/email")"
 
-if [ -z "$GIT_COMMITTER_NAME" ]; then
-  echo "Setting git committer name from 1Password..."
-  export GIT_COMMITTER_NAME="$(op read "$OP_SSH_REF/User/name")"
-fi
-if [ -z "$GIT_COMMITTER_EMAIL" ]; then
-  echo "Setting git committer email from 1Password..."
-  export GIT_COMMITTER_EMAIL="$(op read "$OP_SSH_REF/User/email")"
-fi
-
-# add some bashrc features
-echo "Configuring custom .bashrc entries..."
-{
-    echo 'eval "$(direnv hook bash)"'
-} >> ~/.bashrc 
-
-# configure git with ssh from op cli
-cat <<EOF > ~/.ssh/config
+        # configure git with ssh from op cli
+        cat <<EOF > ~/.ssh/config
 Host github.com
    HostName github.com
    User git
@@ -61,8 +53,8 @@ Host github.com
    IdentitiesOnly yes
 EOF
 
-# now the gitconfig
-cat <<EOF > ~/.gitconfig
+        # now the gitconfig
+        cat <<EOF > ~/.gitconfig
 [user]
  name = $GIT_COMMITTER_NAME
  email = $GIT_COMMITTER_EMAIL
@@ -78,11 +70,14 @@ cat <<EOF > ~/.gitconfig
  gpgsign = true
 EOF
 
-# build the common gitignore
-cat <<EOF > ~/.gitignore
+        # build the common gitignore
+        cat <<EOF > ~/.gitignore
 .DS_Store
 *.log
 *.tmp
 stuff
 .vscode/settings.json
 EOF
+    # end of op git setup
+    fi
+fi
