@@ -26,4 +26,3 @@ Set an environment variable named ``OP_SSH_SECRET`` to the name of a secret in 1
 The `.gitconfig` is configured to use the SSH key for authentication and signing commits. Make sure the same key is configured in Github for SSH access and commit signing. In the same secret as `OP_SSH_SECRET`, add a section titled `User` and add a `name` and `email` field to configure git commit signing.
 
 This will ultimately make it so all of your commits will be signed, not just authenticated. 
-
