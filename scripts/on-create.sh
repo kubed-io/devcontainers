@@ -34,7 +34,7 @@ OP_SSH_REF="op://$OP_VAULT_NAME/$OP_SSH_SECRET"
 if [ -S "$HOME/.1password/agent.sock" ] && [ -d /opt/1Password ]; then
     echo "1Password SSH agent socket found, configuring SSH to use it..."
 else
-    if [ "$OP_GIT_SETUP" = "true" ]; then
+    if [ "$OP_GIT_SETUP" = "true" ] && [ "${CODESPACES}" != "true" ]; then
         echo "1Password SSH agent socket not found, fetching SSH keys directly from 1Password..."
         op read "$OP_SSH_REF/private key?ssh-format=openssh" > ~/.ssh/github
         op read "$OP_SSH_REF/public key" > ~/.ssh/github.pub
