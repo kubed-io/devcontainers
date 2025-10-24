@@ -41,8 +41,8 @@ else
         chmod 600 ~/.ssh/github
         chmod 644 ~/.ssh/github.pub
         echo "Setting git committer name and email from 1Password..."
-        export GIT_COMMITTER_NAME="$(op read "$OP_SSH_REF/User/name")"
-        export GIT_COMMITTER_EMAIL="$(op read "$OP_SSH_REF/User/email")"
+        export GIT_USER_NAME="$(op read "$OP_SSH_REF/User/name")"
+        export GIT_USER_EMAIL="$(op read "$OP_SSH_REF/User/email")"
 
         # configure git with ssh from op cli
         cat <<EOF > ~/.ssh/config
@@ -56,8 +56,8 @@ EOF
         # now the gitconfig
         cat <<EOF > ~/.gitconfig
 [user]
- name = $GIT_COMMITTER_NAME
- email = $GIT_COMMITTER_EMAIL
+ name = $GIT_USER_NAME
+ email = $GIT_USER_EMAIL
  signingkey = ~/.ssh/github
 
 [core]
