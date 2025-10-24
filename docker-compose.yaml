@@ -1,7 +1,7 @@
 services:
 
   kubed-dev:
-    image: &image kubed/devcontainer:latest
+    image: &image kubed/devcontainers:latest
     container_name: kubed-dev
     build:
       target: devcontainer
@@ -30,7 +30,7 @@ services:
       COMPOSE_PROJECT_NAME: kubed-krm
 
   kubed-codeserver:
-    image: kubed/krm:codeserver
+    image: kubed/devcontainers:codeserver
     container_name: kubed-codeserver
     build:
       target: codeserver
