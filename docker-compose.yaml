@@ -1,0 +1,61 @@
+services:
+
+  kubed-dev:
+    image: &image kubed/devcontainer:latest
+    container_name: kubed-dev
+    build:
+      target: devcontainer
+      tags:
+      - *image
+      - kubed/devcontainers:ubuntu
+      - kubed/devcontainers:${GIT_SHA:-latest}
+      - kubed/devcontainers:${GIT_REF:-latest}
+      - kubed/devcontainers:${GIT_TAG:-latest}
+      x-bake:
+        platforms:
+        - linux/amd64
+        - linux/arm64
+        cache-to: type=gha,mode=max,scope=kubed-dev
+        cache-from: type=gha,scope=kubed-dev
+    restart: no
+    tty: true
+    stdin_open: true
+    labels:
+      kubed.io/type: devcontainer
+      kubed.io/category: ide
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      COMPOSE_IGNORE_ORPHANS: 'true'
+      COMPOSE_PROJECT_NAME: kubed-krm
+
+  kubed-codeserver:
+    image: kubed/krm:codeserver
+    container_name: kubed-codeserver
+    build:
+      target: codeserver
+      tags:
+      - kubed/devcontainers:codeserver
+      - kubed/devcontainers:codeserver-${GIT_SHA:-latest}
+      - kubed/devcontainers:codeserver-${GIT_REF:-latest}
+      - kubed/devcontainers:codeserver-${GIT_TAG:-latest}
+      x-bake:
+        platforms:
+        - linux/amd64
+        - linux/arm64
+        cache-to: type=gha,mode=max,scope=kubed-codeserver
+        cache-from: type=gha,scope=kubed-codeserver
+    restart: no
+    tty: true
+    stdin_open: true
+    user: coder
+    labels:
+      kubed.io/type: codeserver
+      kubed.io/category: ide
+    ports:
+    - 8088:8080
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      COMPOSE_IGNORE_ORPHANS: 'true'
+      COMPOSE_PROJECT_NAME: devcontainer
