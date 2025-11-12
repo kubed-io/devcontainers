@@ -36,7 +36,7 @@ RUN <<EOF
 
 # make some dirs 
 mkdir -p /kubed /kubed/code-server /home/coder/.local/share/code-server /projects
-chown -R coder:coder /kubed /home/coder/.local/share/code-server /projects
+chown -R coder:coder /kubed /home/coder/.local /home/coder/.local/share/code-server /projects
 
 # add coder to docker group
 groupadd -g 983 docker
