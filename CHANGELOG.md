@@ -8,6 +8,11 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- new nvm install script
+- always have python for dev envs
+
 ## [0.0.6] - 2025-12-29
 
 ## [0.0.5] - 2025-11-11
