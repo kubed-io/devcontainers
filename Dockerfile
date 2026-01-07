@@ -47,7 +47,9 @@ COPY --chown=coder:coder ./scripts /kubed/scripts
 
 RUN <<EOF 
 chmod +x /kubed/scripts/*.sh
-/kubed/scripts/install.sh direnv fzf 1password-cli docker-ce-cli openvpn
+/kubed/scripts/install.sh direnv fzf 1password-cli docker-ce-cli openvpn python3 python3-pip
 EOF
 
 USER coder 
+
+RUN /kubed/scripts/install-nvm.sh
