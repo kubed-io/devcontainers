@@ -19,6 +19,16 @@ if [[ " ${TOOLS[@]} " =~ " openvpn " ]]; then
 else
   OPENVPN_ENABLED="false"
 fi
+if [[ " ${TOOLS[@]} " =~ " gh " ]]; then
+  GH_ENABLED="true"
+else
+  GH_ENABLED="false"
+fi
+if [[ " ${TOOLS[@]} " =~ " google-cloud-cli " ]]; then
+  GCLOUD_ENABLED="true"
+else
+  GCLOUD_ENABLED="false"
+fi
 
 # make sure prerequisites are installed
 apt-get update
@@ -52,6 +62,20 @@ if [ "${DOCKER_CLI_ENABLED}" = "true" ]; then
   mkdir -p /etc/apt/keyrings
   curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+fi
+
+# if GH_ENABLED
+if [ "${GH_ENABLED}" = "true" ]; then
+  mkdir -p /etc/apt/keyrings
+  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /etc/apt/keyrings/githubcli-archive-keyring.gpg
+  chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
+fi
+
+# if GCLOUD_ENABLED (gcloud, gsutil and bq)
+if [ "${GCLOUD_ENABLED}" = "true" ]; then
+  curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" > /etc/apt/sources.list.d/google-cloud-sdk.list
 fi
 
 if [ ${#TOOLS[@]} -gt 0 ]; then

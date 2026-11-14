@@ -8,6 +8,10 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- `install.sh` installs `gh` and `google-cloud-cli` from their vendor apt repos when asked for.
+
 ## [0.0.10] - 2026-10-06
 
 ## [0.0.9] - 2026-05-16
